@@ -6,13 +6,15 @@ import { getFirestore, doc, setDoc, getDoc, enableIndexedDbPersistence }
   from 'https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js';
 
 // 1) KONFIG – wklej z konsoli Firebase:
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "PASTE_ME",
-  authDomain: "PASTE_ME.firebaseapp.com",
-  projectId: "PASTE_ME",
-  storageBucket: "PASTE_ME.appspot.com",
-  messagingSenderId: "PASTE_ME",
-  appId: "PASTE_ME"
+  apiKey: "AIzaSyAyr4czJXsL5a07g8vuR1zMp__rDVSlb9U",
+  authDomain: "mini-duo.firebaseapp.com",
+  projectId: "mini-duo",
+  storageBucket: "mini-duo.firebasestorage.app",
+  messagingSenderId: "314630300501",
+  appId: "1:314630300501:web:cc1b6f6fe922d15f8545dc",
+  measurementId: "G-LJBB1K58BL"
 };
 
 // 2) Init
