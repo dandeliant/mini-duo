@@ -1,18 +1,9 @@
 {
-  "title": "EN A1 — Basics",
-  "intro": "Simple starter content to verify offline caching.",
+  "id": "en-a1-basics",
+  "title": "English A1 · Basics",
   "items": [
-    {
-      "en": "hello",
-      "pl": "cześć"
-    },
-    {
-      "en": "thank you",
-      "pl": "dziękuję"
-    },
-    {
-      "en": "goodbye",
-      "pl": "do widzenia"
-    }
+    { "q": "hello", "choices": ["cześć", "do widzenia", "proszę"], "correct": 0 },
+    { "q": "thank you", "choices": ["dziękuję", "przepraszam", "nie ma za co"], "correct": 0 },
+    { "q": "goodbye", "choices": ["do widzenia", "dzień dobry", "smacznego"], "correct": 0 }
   ]
 }
