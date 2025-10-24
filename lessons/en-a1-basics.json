@@ -1,0 +1,18 @@
+{
+  "title": "EN A1 — Basics",
+  "intro": "Simple starter content to verify offline caching.",
+  "items": [
+    {
+      "en": "hello",
+      "pl": "cześć"
+    },
+    {
+      "en": "thank you",
+      "pl": "dziękuję"
+    },
+    {
+      "en": "goodbye",
+      "pl": "do widzenia"
+    }
+  ]
+}

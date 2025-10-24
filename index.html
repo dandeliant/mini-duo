@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mini‑Duolingo (Starter)</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <meta name="theme-color" content="#4f46e5" />
+  <style>
+    :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--accent:#4f46e5}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial;
+    background:linear-gradient(135deg,#111827,#0b1220);color:var(--text);min-height:100dvh;display:grid;place-items:center}
+    .card{background:rgba(255,255,255,.06);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12);
+      padding:28px;border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.35);max-width:720px;width:min(92vw,720px)}
+    h1{margin:0 0 8px;font-weight:800;letter-spacing:.2px}
+    .muted{opacity:.8;margin:0 0 16px}
+    button{border:0;padding:12px 16px;border-radius:12px;cursor:pointer;font-weight:600}
+    .primary{background:var(--accent);color:white}
+    pre{background:#0b1324;padding:12px;border-radius:12px;overflow:auto}
+    footer{margin-top:16px;font-size:.9rem;opacity:.8}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Mini‑Duolingo — Starter PWA</h1>
+    <p class="muted">Lekcje offline + manifest + service worker. Działa na GitHub Pages (project site).</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+      <button class="primary" id="load">Load sample lesson</button>
+      <button id="install" style="display:none">Install app</button>
+    </div>
+
+    <pre id="out">Click "Load sample lesson"…</pre>
+
+    <footer>Icons + SW + manifest już skonfigurowane. Ścieżki względne (<code>./</code>) dla project site.</footer>
+  </main>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js');
+      });
+    }
+
+    // Simple lesson fetch demo
+    const out = document.getElementById('out');
+    document.getElementById('load').addEventListener('click', async () => {
+      try {
+        const res = await fetch('./lessons/en-a1-basics.json');
+        const data = await res.json();
+        out.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        out.textContent = 'Error loading lesson: ' + e.message;
+      }
+    });
+
+    // PWA install prompt
+    let deferredPrompt = null;
+    const installBtn = document.getElementById('install');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = 'inline-block';
+    });
+
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      installBtn.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
