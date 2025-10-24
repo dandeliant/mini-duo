@@ -1,5 +1,5 @@
 // Service Worker (project site safe: uses relative ./ paths)
-const CACHE_NAME = 'mini-duolingo-v1';
+const CACHE_NAME = 'mini-duo-v1';
 const FILES_TO_CACHE = [
   './',
   './index.html',
