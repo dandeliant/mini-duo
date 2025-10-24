@@ -1,6 +1,6 @@
 {
-  "name": "Mini‑Duolingo",
-  "short_name": "Duolingo",
+  "name": "mini‑duo",
+  "short_name": "Duo",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
