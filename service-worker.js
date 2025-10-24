@@ -1,45 +1,30 @@
-// Service Worker (project site safe: uses relative ./ paths)
-const CACHE_NAME = 'mini-duo-v1';
-const FILES_TO_CACHE = [
-  './',
-  './index.html',
-  './app.js',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
-  './lessons/en-a1-basics.json',
+const CACHE = 'mini-duo-v1';
+const ASSETS = [
+  './','./index.html','./app.js','./manifest.webmanifest',
+  './icon-192.png','./icon-512.png',
+  './lessons/en-a1-basics.json'
 ];
 
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(FILES_TO_CACHE))
-  );
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)));
   self.skipWaiting();
 });
-
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys => Promise.all(
-      keys.map(k => (k !== CACHE_NAME ? caches.delete(k) : Promise.resolve()))
-    ))
+    caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k))))
   );
   self.clients.claim();
 });
-
-self.addEventListener('fetch', (e) => {
-  const url = new URL(e.request.url);
-  // Network-first for JSON; cache-first for static
-  if (url.pathname.endsWith('.json')) {
-    e.respondWith(
-      fetch(e.request).then(resp => {
-        const copy = resp.clone();
-        caches.open(CACHE_NAME).then(c => c.put(e.request, copy));
-        return resp;
-      }).catch(() => caches.match(e.request))
-    );
-    return;
-  }
+self.addEventListener('fetch', e => {
+  const req = e.request;
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    caches.match(req).then(cached =>
+      cached || fetch(req).then(res => {
+        if (req.method==='GET' && new URL(req.url).origin===location.origin) {
+          const clone = res.clone(); caches.open(CACHE).then(c=>c.put(req, clone));
+        }
+        return res;
+      }).catch(()=>caches.match('./index.html'))
+    )
   );
 });
